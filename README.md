@@ -1,6 +1,6 @@
 # orvin-sitio
 
-Sitio público de Orvin — `orvin.digital`.
+Sitio público de Orvin — `orvin.lat`.
 
 Landing de una sola página, estática y autocontenida. Sin build, sin dependencias, sin framework.
 
