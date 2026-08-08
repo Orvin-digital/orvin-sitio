@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orvin — Agentes de IA que llegan a producción</title>
+<meta name="description" content="Orvin diseña, construye y opera sistemas de negocio con agentes de IA. Con evidencia auditable. Y lo prueba operando sus propios negocios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* ── Tokens Orvin (@orvin/ds v0.1.0) ── */
+  --ov-ground:#0A0D16; --ov-ground-2:#0E121D; --ov-cell:#121826;
+  --ov-cell-line:rgba(150,168,224,.16);
+  --ov-paper:#F4F5F8; --ov-panel:#FFFFFF; --ov-panel-2:#FAFBFD;
+  --ov-ink:#10141F; --ov-ink-soft:#3A4151; --ov-muted:#6B7382;
+  --ov-line:#E2E6EE; --ov-line-soft:#ECEFF4;
+  --ov-blue:#2F5BFF; --ov-blue-soft:#E6ECFF; --ov-blue-ink:#1E3FB0;
+  --ov-purple:#7C5CFF; --ov-purple-soft:#ECE7FF; --ov-purple-ink:#5A3DD6;
+  --ov-green:#149E6A; --ov-green-soft:#E1F3EB; --ov-green-ink:#0C7A50;
+  --ov-orange:#E26A2C; --ov-orange-soft:#FBEADF; --ov-orange-ink:#B4521C;
+  --ov-hero-ink:#EEF1F8; --ov-hero-eyebrow:#8FA0E8; --ov-hero-lead:#B7BFD4; --ov-hero-faint:#7F88A3;
+  --ov-wordmark-ink:#eef3fb; --ov-wordmark-dot:#3b9aef;
+  --ov-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --ov-mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --ov-brand-font:"Quicksand",var(--ov-sans);
+  --ov-measure:66ch;
+  --ov-s--1:clamp(.78rem,.76rem + .08vw,.84rem);
+  --ov-s-0:clamp(1rem,.97rem + .15vw,1.1rem);
+  --ov-s-1:clamp(1.18rem,1.1rem + .4vw,1.4rem);
+  --ov-s-2:clamp(1.5rem,1.3rem + .9vw,2.05rem);
+  --ov-s-3:clamp(2rem,1.5rem + 2.2vw,3.1rem);
+  --ov-s-4:clamp(2.7rem,1.9rem + 3.8vw,4.9rem);
+  --wrap:1140px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ov-paper);color:var(--ov-ink);font-family:var(--ov-sans);
+  font-size:var(--ov-s-0);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,canvas{max-width:100%;display:block}
+a{color:inherit}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.reading{max-width:var(--ov-measure)}
+
+/* ── Marca ── */
+.wordmark{font-family:var(--ov-brand-font);font-weight:600;letter-spacing:-.01em;
+  color:var(--ov-wordmark-ink);display:inline-flex;align-items:baseline;gap:.06em;line-height:1}
+.wordmark i{width:.16em;height:.16em;border-radius:50%;background:var(--ov-wordmark-dot);display:inline-block}
+.wordmark.on-light{color:var(--ov-ink)}
+
+/* ── Nav ── */
+.nav{position:sticky;top:0;z-index:50;background:rgba(10,13,22,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--ov-cell-line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.nav .wordmark{font-size:26px}
+.nav-cta{font-family:var(--ov-mono);font-size:var(--ov-s--1);letter-spacing:.04em;
+  text-decoration:none;color:var(--ov-hero-ink);border:1px solid var(--ov-cell-line);
+  padding:9px 16px;border-radius:999px;white-space:nowrap;transition:.18s}
+.nav-cta:hover{background:var(--ov-blue);border-color:var(--ov-blue)}
+
+/* ── Hero ── */
+.hero{background:var(--ov-ground);color:var(--ov-hero-ink);position:relative;overflow:hidden;
+  padding:clamp(88px,12vw,164px) 0 clamp(96px,13vw,180px)}
+/* Arte generado por un agente Orvin (Higgsfield · Recraft V4.1, paleta de marca) */
+.hero::before{content:"";position:absolute;inset:0;z-index:0;
+  background:url("arte/A2-hero.webp") center right/cover no-repeat;opacity:.95}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,var(--ov-ground) 4%,rgba(10,13,22,.92) 30%,rgba(10,13,22,.55) 56%,rgba(10,13,22,.15) 82%)}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr);
+  gap:clamp(32px,5vw,72px);align-items:center}
+.art-credit{position:absolute;right:20px;bottom:16px;z-index:3;font-family:var(--ov-mono);
+  font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ov-hero-faint);
+  background:rgba(10,13,22,.55);border:1px solid var(--ov-cell-line);border-radius:999px;
+  padding:6px 13px;backdrop-filter:blur(6px)}
+.art-credit b{color:var(--ov-hero-eyebrow);font-weight:600}
+.eyebrow{font-family:var(--ov-mono);font-size:var(--ov-s--1);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ov-hero-eyebrow);margin:0 0 22px;display:flex;
+  align-items:center;gap:10px;flex-wrap:wrap}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--ov-green);flex:none}
+h1{font-size:var(--ov-s-4);line-height:1.03;letter-spacing:-.03em;font-weight:800;margin:0;
+  max-width:15ch;text-wrap:balance}
+h1 em{font-style:normal;color:transparent;background:linear-gradient(100deg,#30e896,#2cc8dc 46%,#469eff);
+  -webkit-background-clip:text;background-clip:text}
+.lead{font-size:var(--ov-s-1);line-height:1.5;color:var(--ov-hero-lead);max-width:52ch;margin:26px 0 0;font-weight:400}
+.lead strong{color:var(--ov-hero-ink);font-weight:650}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:650;
+  font-size:var(--ov-s-0);padding:14px 26px;border-radius:999px;transition:.18s;border:1px solid transparent}
+.btn-primary{background:var(--ov-blue);color:#fff}
+.btn-primary:hover{background:#1E3FB0}
+.btn-ghost{border-color:var(--ov-cell-line);color:var(--ov-hero-ink)}
+.btn-ghost:hover{border-color:var(--ov-hero-eyebrow);background:rgba(255,255,255,.03)}
+.orb{display:flex;justify-content:center;align-items:center}
+.orb canvas{filter:drop-shadow(0 0 60px rgba(70,158,255,.22))}
+
+/* ── Franja de prueba ── */
+.proof{background:var(--ov-ground-2);border-top:1px solid var(--ov-cell-line);
+  border-bottom:1px solid var(--ov-cell-line);padding:26px 0}
+.proof .wrap{display:flex;gap:clamp(20px,4vw,56px);flex-wrap:wrap;justify-content:space-between}
+.proof-item{display:flex;flex-direction:column;gap:3px;min-width:150px}
+.proof-item b{font-size:var(--ov-s-2);font-weight:800;letter-spacing:-.02em;color:var(--ov-hero-ink);line-height:1.1}
+.proof-item span{font-family:var(--ov-mono);font-size:var(--ov-s--1);color:var(--ov-hero-faint);
+  letter-spacing:.04em;text-transform:uppercase}
+
+/* ── Secciones claras ── */
+section.light{padding:clamp(64px,8vw,108px) 0;background:var(--ov-paper)}
+section.light.alt{background:var(--ov-panel)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:12px}
+.chip{font-family:var(--ov-mono);font-size:var(--ov-s--1);font-weight:600;color:var(--ov-blue);
+  background:var(--ov-blue-soft);border-radius:6px;padding:4px 9px;letter-spacing:.06em;flex:none}
+h2{font-size:var(--ov-s-3);line-height:1.1;letter-spacing:-.025em;font-weight:800;margin:0;
+  max-width:20ch;text-wrap:balance}
+.sec-lead{color:var(--ov-ink-soft);font-size:var(--ov-s-1);margin:20px 0 0;max-width:60ch;line-height:1.5}
+h3{font-size:var(--ov-s-1);font-weight:750;letter-spacing:-.015em;margin:0 0 8px;line-height:1.25}
+
+/* ── Datos duros ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-top:44px}
+.stat{background:var(--ov-panel);border:1px solid var(--ov-line);border-radius:14px;padding:26px 24px}
+section.light.alt .stat{background:var(--ov-panel-2)}
+.stat b{display:block;font-size:var(--ov-s-3);font-weight:800;letter-spacing:-.03em;
+  color:var(--ov-orange-ink);line-height:1;margin-bottom:12px}
+.stat p{margin:0;color:var(--ov-ink-soft);font-size:.95rem;line-height:1.5}
+.stat cite{display:block;margin-top:12px;font-family:var(--ov-mono);font-size:.74rem;
+  color:var(--ov-muted);font-style:normal;letter-spacing:.03em}
+
+/* ── Capacidades ── */
+.caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:18px;margin-top:44px}
+.cap{background:var(--ov-panel);border:1px solid var(--ov-line);border-radius:14px;padding:26px 24px;
+  position:relative;transition:.18s}
+section.light.alt .cap{background:var(--ov-panel-2)}
+.cap:hover{border-color:var(--ov-blue);transform:translateY(-2px)}
+.cap .tag{font-family:var(--ov-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:600;display:inline-block;padding:3px 8px;border-radius:5px;margin-bottom:14px}
+.t-live{background:var(--ov-green-soft);color:var(--ov-green-ink)}
+.t-build{background:var(--ov-blue-soft);color:var(--ov-blue-ink)}
+.t-agent{background:var(--ov-purple-soft);color:var(--ov-purple-ink)}
+.cap ul{margin:12px 0 0;padding:0;list-style:none}
+.cap li{position:relative;padding-left:18px;margin-bottom:6px;color:var(--ov-ink-soft);
+  font-size:.93rem;line-height:1.45}
+.cap li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;
+  border-radius:50%;background:var(--ov-line);}
+.cap:hover li::before{background:var(--ov-blue)}
+.caps-more{margin-top:24px;padding:20px 24px;border:1px dashed var(--ov-line);border-radius:14px;
+  color:var(--ov-ink-soft);font-size:.95rem}
+.caps-more b{color:var(--ov-ink);font-weight:700}
+.cap-art{padding:0;overflow:hidden}
+.cap-art img{width:100%;height:150px;object-fit:cover;object-position:center;
+  background:var(--ov-ground);border-bottom:1px solid var(--ov-line)}
+.cap-art .tag{margin:22px 24px 0}
+.cap-art h3,.cap-art ul{margin-left:24px;margin-right:24px}
+.cap-art ul{padding-bottom:26px}
+.cap-art h3{margin-top:12px}
+.art-note{margin-top:20px;font-family:var(--ov-mono);font-size:.72rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ov-muted)}
+.art-note b{color:var(--ov-blue-ink);font-weight:600}
+.artband{margin:56px 0 0;padding:0;border-radius:18px;overflow:hidden;position:relative;
+  background:var(--ov-ground);border:1px solid var(--ov-line)}
+.artband img{width:100%;height:clamp(200px,26vw,340px);object-fit:cover;object-position:center}
+.artband figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 24px 18px;
+  font-family:var(--ov-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ov-hero-faint);
+  background:linear-gradient(180deg,transparent,rgba(10,13,22,.85))}
+.artband figcaption b{color:var(--ov-hero-eyebrow);font-weight:600}
+.subsec{margin-top:56px;padding-top:36px;border-top:1px solid var(--ov-line)}
+.subsec-title{font-size:var(--ov-s-2);font-weight:800;letter-spacing:-.025em;margin:0 0 10px}
+.subsec-lead{color:var(--ov-ink-soft);margin:0;max-width:58ch;font-size:1.02rem;line-height:1.5}
+
+/* ── Comparativa ── */
+.tablewrap{margin-top:44px;overflow-x:auto;border:1px solid var(--ov-line);border-radius:14px;
+  background:var(--ov-panel)}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{text-align:left;padding:16px 20px;border-bottom:1px solid var(--ov-line-soft);
+  font-size:.93rem;vertical-align:top;line-height:1.45}
+thead th{font-family:var(--ov-mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ov-muted);font-weight:600;background:var(--ov-panel-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;color:var(--ov-ink);white-space:nowrap}
+.col-us{background:rgba(47,91,255,.045);border-left:2px solid var(--ov-blue);
+  color:var(--ov-ink);font-weight:600}
+thead .col-us{background:var(--ov-blue-soft);color:var(--ov-blue-ink)}
+
+/* ── Proceso ── */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:44px;
+  counter-reset:step}
+.step{background:var(--ov-panel);border:1px solid var(--ov-line);border-radius:14px;padding:26px 24px;
+  position:relative;counter-increment:step}
+section.light.alt .step{background:var(--ov-panel-2)}
+.step::before{content:counter(step,decimal-leading-zero);font-family:var(--ov-mono);font-size:.78rem;
+  font-weight:700;color:var(--ov-blue);letter-spacing:.08em;display:block;margin-bottom:12px}
+.step p{margin:0;color:var(--ov-ink-soft);font-size:.93rem;line-height:1.5}
+.step .gate{margin-top:14px;font-family:var(--ov-mono);font-size:.72rem;letter-spacing:.06em;
+  color:var(--ov-green-ink);background:var(--ov-green-soft);border-radius:5px;padding:4px 8px;
+  display:inline-block;font-weight:600}
+
+/* ── Cita ── */
+.quote{margin:56px 0 0;padding:32px 0 32px 28px;border-left:3px solid var(--ov-blue);
+  font-size:var(--ov-s-2);line-height:1.35;font-weight:700;letter-spacing:-.02em;max-width:24ch}
+
+/* ── Copilot ── */
+.copilot{background:var(--ov-cell);color:var(--ov-hero-ink);border-radius:18px;
+  border:1px solid var(--ov-cell-line);padding:clamp(32px,5vw,56px);margin-top:44px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(28px,4vw,52px);
+  align-items:start;position:relative;overflow:hidden;isolation:isolate}
+.copilot::before{content:"";position:absolute;inset:0;z-index:-2;
+  background:url("arte/F-copilot.webp") center bottom/cover no-repeat}
+.copilot::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(160deg,rgba(18,24,38,.94) 30%,rgba(18,24,38,.72) 70%,rgba(18,24,38,.55))}
+.copilot>*{position:relative}
+.copilot h3{color:var(--ov-hero-ink);font-size:var(--ov-s-2);letter-spacing:-.02em;margin-bottom:14px}
+.copilot p{color:var(--ov-hero-lead);margin:0 0 14px;font-size:.98rem;line-height:1.55}
+.copilot ul{margin:0;padding:0;list-style:none}
+.copilot li{padding-left:20px;position:relative;margin-bottom:10px;color:var(--ov-hero-lead);font-size:.95rem}
+.copilot li::before{content:"→";position:absolute;left:0;color:var(--ov-hero-eyebrow);font-family:var(--ov-mono)}
+
+/* ── Pendiente ── */
+.pending{border:1px dashed var(--ov-orange);background:var(--ov-orange-soft);border-radius:12px;
+  padding:18px 22px;margin-top:28px;font-size:.92rem;color:var(--ov-orange-ink);line-height:1.5}
+.pending b{font-family:var(--ov-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  display:block;margin-bottom:6px;font-weight:700}
+
+/* ── Cierre ── */
+.close{background:var(--ov-ground);color:var(--ov-hero-ink);padding:clamp(72px,9vw,120px) 0;
+  position:relative;overflow:hidden;text-align:center}
+.close::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(80% 70% at 50% 0%,rgba(47,91,255,.14),transparent 62%)}
+.close .wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
+.close h2{font-size:var(--ov-s-3);max-width:18ch;text-wrap:balance;margin-bottom:20px}
+.close .lead{margin:0 auto;text-align:center}
+.tagline{font-family:var(--ov-mono);font-weight:700;letter-spacing:.28em;font-size:.72rem;
+  color:var(--ov-hero-faint);text-transform:uppercase;margin-top:56px;display:flex;
+  align-items:center;justify-content:center;gap:8px}
+.tagline .cursor{width:7px;height:13px;background:var(--ov-wordmark-dot);display:inline-block;
+  animation:blink 1.15s steps(2) infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+footer{background:var(--ov-ground);border-top:1px solid var(--ov-cell-line);padding:28px 0;
+  color:var(--ov-hero-faint);font-family:var(--ov-mono);font-size:.76rem;letter-spacing:.04em}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer a{text-decoration:none}
+footer a:hover{color:var(--ov-hero-ink)}
+
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr}
+  .orb{order:-1;margin-bottom:8px}
+  .orb canvas{width:200px!important;height:200px!important}
+  h1{max-width:100%}
+  .proof .wrap{gap:22px}
+  .proof-item{min-width:calc(50% - 12px)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <span class="wordmark">Orvin<i></i></span>
+    <a class="nav-cta" href="#contacto">Agendar diagnóstico</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow"><span class="dot"></span> Operación con agentes de IA</p>
+      <h1>Agentes de IA que <em>llegan a producción.</em></h1>
+      <p class="lead">
+        El 95% de los pilotos de inteligencia artificial nunca sale del piloto.
+        Orvin diseña, construye y <strong>opera</strong> el sistema que hace funcionar tu negocio,
+        con evidencia auditable en cada paso — y lo prueba operando sus propios negocios.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contacto">Agendar diagnóstico</a>
+        <a class="btn btn-ghost" href="#capacidades">Ver lo que ya opera</a>
+      </div>
+    </div>
+  </div>
+  <span class="art-credit">Arte generado por <b>un agente Orvin</b></span>
+</header>
+
+<div class="proof">
+  <div class="wrap">
+    <div class="proof-item"><b>Punto de venta</b><span>Cobrando a diario</span></div>
+    <div class="proof-item"><b>Inventario y compras</b><span>En operación</span></div>
+    <div class="proof-item"><b>Agentes en WhatsApp</b><span>En operación</span></div>
+    <div class="proof-item"><b>Celdas aisladas</b><span>Por cliente</span></div>
+  </div>
+</div>
+
+<section class="light" id="problema">
+  <div class="wrap">
+    <div class="sec-head"><span class="chip">01</span><h2>El problema no es construir un agente. Es que sobreviva.</h2></div>
+    <p class="sec-lead">
+      Hoy cualquiera arma una demo en una tarde. Por eso pasamos de 2,000 a más de 12,000 agencias
+      de automatización con IA en dos años. Lo que casi nadie hace es sostener el sistema cuando
+      entra a la operación real, con dinero, personas y errores de verdad.
+    </p>
+    <div class="stats">
+      <div class="stat">
+        <b>95%</b>
+        <p>de los pilotos de IA generativa nunca llega a producción ni entrega resultados medibles.</p>
+        <cite>MIT, State of AI in Business</cite>
+      </div>
+      <div class="stat">
+        <b>42%</b>
+        <p>de las empresas abandonaron la mayoría de sus iniciativas de IA durante el último año.</p>
+        <cite>Reportes de adopción 2025–2026</cite>
+      </div>
+      <div class="stat">
+        <b>+80%</b>
+        <p>de los proyectos de IA fracasan: el doble que un proyecto de tecnología convencional.</p>
+        <cite>RAND Corporation</cite>
+      </div>
+    </div>
+    <blockquote class="quote">Todos venden el arranque. Casi nadie vende la permanencia.</blockquote>
+  </div>
+</section>
+
+<section class="light alt" id="capacidades">
+  <div class="wrap">
+    <div class="sec-head"><span class="chip">02</span><h2>Lo que ya construimos y operamos</h2></div>
+    <p class="sec-lead">
+      No es un catálogo de lo que podríamos hacer. Es lo que hoy está corriendo, cobrando y
+      registrando movimientos reales todos los días.
+    </p>
+
+    <div class="caps">
+      <article class="cap">
+        <span class="tag t-live">En operación</span>
+        <h3>Punto de venta y caja</h3>
+        <ul>
+          <li>Cobro con corte por turno y por método de pago</li>
+          <li>Gastos cotidianos y retiros de seguridad con autoridad escalonada</li>
+          <li>Reconteo, cierre con diferencia e incidencias por severidad</li>
+          <li>Conciliación separada por método</li>
+        </ul>
+      </article>
+
+      <article class="cap">
+        <span class="tag t-live">En operación</span>
+        <h3>Inventario, compras y proveedores</h3>
+        <ul>
+          <li>Recepción esperada, parcial, con excedente o sin orden previa</li>
+          <li>Conteos cíclicos ciegos, reconteo y ajustes por límite</li>
+          <li>Merma, caducidad y devolución al proveedor separadas</li>
+          <li>Reposición asistida, explicable y ajustable</li>
+        </ul>
+      </article>
+
+      <article class="cap">
+        <span class="tag t-live">En operación</span>
+        <h3>Precios, costos y margen</h3>
+        <ul>
+          <li>Costo por receta y promedio móvil con FIFO/FEFO físico</li>
+          <li>Costo esperado al cobro contra consumo real</li>
+          <li>Combos, motor promocional y mejor total automático</li>
+          <li>Política monetaria en centavos exactos</li>
+        </ul>
+      </article>
+
+      <article class="cap">
+        <span class="tag t-live">En operación</span>
+        <h3>Pedidos, preparación y entrega</h3>
+        <ul>
+          <li>Pedido dividido por estación de trabajo</li>
+          <li>Tiempos objetivo por producto con alertas escalonadas</li>
+          <li>Toma, reasignación e incidencias de preparación</li>
+          <li>Entrega final diferenciada por modalidad</li>
+        </ul>
+      </article>
+
+      <article class="cap">
+        <span class="tag t-agent">Agentes</span>
+        <h3>Agentes en WhatsApp</h3>
+        <ul>
+          <li>Corte y reporte de operación conversacional</li>
+          <li>Asistente personal con agenda y seguimiento</li>
+          <li>Atención y captación para negocios de venta</li>
+          <li>Escalamiento a persona siempre disponible</li>
+        </ul>
+      </article>
+
+      <article class="cap">
+        <span class="tag t-agent">Agentes</span>
+        <h3>Analítica y reportes</h3>
+        <ul>
+          <li>Reporte diario automático de la operación</li>
+          <li>Tableros de balance por centro de costo</li>
+          <li>Transcripción de juntas con minuta accionable</li>
+          <li>Auditoría de catálogo, costos y precios</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="caps-more">
+      <b>Además:</b> cobro en línea con marca propia, sitios y agentes de venta desplegados,
+      chat web multiagente, y producción audiovisual con IA. Cada pieza vive en su propio
+      entorno aislado, con versión identificable y reversión disponible.
+    </p>
+
+    <div class="subsec">
+      <h3 class="subsec-title">Agentes especializados</h3>
+      <p class="subsec-lead">
+        No todo empieza con un sistema completo. La mayoría de los negocios arranca con un agente
+        que hace una sola cosa muy bien — y que se entrega en semanas, no en meses.
+      </p>
+    </div>
+
+    <div class="caps">
+      <article class="cap cap-art">
+        <img src="arte/B-orden-thumb.webp" alt="Partículas dispersas que se ordenan en estratos precisos" loading="lazy">
+        <span class="tag t-agent">Disponible</span>
+        <h3>Clasifica y extrae</h3>
+        <ul>
+          <li>Ordena correos, tickets, documentos y catálogos por criterio propio</li>
+          <li>Extrae datos de facturas, remisiones y PDF a información utilizable</li>
+          <li>Detecta duplicados, faltantes e inconsistencias</li>
+          <li>Marca lo que necesita ojo humano en lugar de adivinar</li>
+        </ul>
+      </article>
+
+      <article class="cap cap-art">
+        <img src="arte/C-conexion-thumb.webp" alt="Esferas de partículas separadas unidas por filamentos de luz" loading="lazy">
+        <span class="tag t-agent">Disponible</span>
+        <h3>Se conecta a lo que ya usas</h3>
+        <ul>
+          <li>Punto de venta, ERP, CRM y hojas de cálculo</li>
+          <li>WhatsApp, correo y pasarelas de cobro</li>
+          <li>Lee y escribe con permisos explícitos, nunca acceso total</li>
+          <li>Toda acción sensible pasa por aprobación humana</li>
+        </ul>
+      </article>
+
+      <article class="cap cap-art">
+        <img src="arte/D-creacion-thumb.webp" alt="Núcleo de partículas que florece en una forma nueva" loading="lazy">
+        <span class="tag t-agent">Disponible</span>
+        <h3>Crea contenido</h3>
+        <ul>
+          <li>Imagen y video de marca, producto y campaña</li>
+          <li>Textos, propuestas y documentos con tu identidad</li>
+          <li>Piezas para redes en formato y ritmo constante</li>
+          <li>Cada pieza con costo declarado antes de generarse</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="art-note">↑ Las tres piezas de arriba las generó <b>un agente Orvin</b> mientras armábamos esta página.</p>
+
+    <div class="pending">
+      <b>Pendiente de decisión — no publicar así</b>
+      Falta el caso con números reales (D1): qué negocio se puede nombrar o cómo se anonimiza,
+      y qué cifras se pueden mostrar. Sin eso, esta sección sigue siendo cualitativa.
+    </div>
+  </div>
+</section>
+
+<section class="light" id="diferencia">
+  <div class="wrap">
+    <div class="sec-head"><span class="chip">03</span><h2>Por qué Orvin y no otra opción</h2></div>
+    <p class="sec-lead">
+      Hay dos formas de comprar IA hoy, y las dos dejan al negocio expuesto. Orvin es una tercera.
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Plataformas de agentes</th>
+            <th>Agencias de automatización</th>
+            <th class="col-us">Orvin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Qué venden</td>
+            <td>Volumen de conversaciones resueltas</td>
+            <td>Un entregable: el flujo construido</td>
+            <td class="col-us">La operación del sistema, con responsabilidad continua</td>
+          </tr>
+          <tr>
+            <td>Precio</td>
+            <td>Oculto. Contrato anual y cuota de arranque de seis cifras</td>
+            <td>Inventado por cliente, sin base de costo</td>
+            <td class="col-us">Rango público, con margen declarado</td>
+          </tr>
+          <tr>
+            <td>Quién responde</td>
+            <td>Soporte por ticket</td>
+            <td>Nadie después del cierre</td>
+            <td class="col-us">Orvin opera, monitorea y corrige</td>
+          </tr>
+          <tr>
+            <td>Prueba de que sirve</td>
+            <td>Métricas del propio proveedor</td>
+            <td>Demos y promesas de retorno</td>
+            <td class="col-us">Sistema de registro externo o cálculo reproducible</td>
+          </tr>
+          <tr>
+            <td>Tus datos</td>
+            <td>En su nube, mezclados</td>
+            <td>Donde haya quedado la integración</td>
+            <td class="col-us">Entorno aislado por cliente, con retención y borrado definidos</td>
+          </tr>
+          <tr>
+            <td>Si falla</td>
+            <td>Sigues pagando el contrato</td>
+            <td>Costo de rehacerlo</td>
+            <td class="col-us">Reversión prevista desde antes de empezar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <blockquote class="quote">Vendemos lo mismo que usamos para cobrar dinero real todos los días.</blockquote>
+  </div>
+</section>
+
+<section class="light alt" id="metodo">
+  <div class="wrap">
+    <div class="sec-head"><span class="chip">04</span><h2>Cómo trabajamos</h2></div>
+    <p class="sec-lead">
+      Cuatro etapas con puertas explícitas. Ninguna avanza sin evidencia, y cada una declara desde
+      el inicio en qué condiciones se detiene y cómo se revierte.
+    </p>
+    <div class="flow">
+      <article class="step">
+        <h3>Diagnóstico</h3>
+        <p>Un proceso, un responsable, un resultado medible. Definimos la fuente de verdad y el
+        criterio de aceptación antes de escribir una línea.</p>
+        <span class="gate">Sin costo</span>
+      </article>
+      <article class="step">
+        <h3>Diseño aprobado</h3>
+        <p>Alcance, riesgos, límites de gasto y condiciones de parada por escrito. Tú apruebas
+        antes de que construyamos.</p>
+        <span class="gate">Puerta 1</span>
+      </article>
+      <article class="step">
+        <h3>Construcción y prueba</h3>
+        <p>El sistema se levanta en su propio entorno aislado, con datos reales y pruebas de
+        aislamiento, presupuesto y reversión.</p>
+        <span class="gate">Puerta 2</span>
+      </article>
+      <article class="step">
+        <h3>Producción y operación</h3>
+        <p>Liberación acompañada y operación continua: monitoreo, correcciones y mejoras. Aquí es
+        donde mueren los demás proyectos.</p>
+        <span class="gate">Puerta 3</span>
+      </article>
+    </div>
+    <figure class="artband">
+      <img src="arte/E-permanencia.webp" alt="Anillos de partículas en órbita estable alrededor de un centro luminoso" loading="lazy" width="2000" height="1143">
+      <figcaption>Orden que se sostiene. Arte generado por <b>un agente Orvin</b>.</figcaption>
+    </figure>
+
+    <blockquote class="quote">Si no llega a producción, no se cobra.</blockquote>
+  </div>
+</section>
+
+<section class="light" id="copilot">
+  <div class="wrap">
+    <div class="sec-head"><span class="chip">05</span><h2>Hacia dónde va Orvin</h2></div>
+    <p class="sec-lead">
+      Cada sistema que operamos alimenta el mismo motor. Ese motor se convierte en el producto donde
+      cualquier negocio podrá operar sus propios agentes.
+    </p>
+    <div class="copilot">
+      <div>
+        <h3>Orvin Copilot</h3>
+        <p>El centro de mando de tus agentes: consultas tu operación, conversas con ellos, recibes
+        entregables y apruebas lo delicado — sin tener que entender nada de la infraestructura que
+        hay debajo.</p>
+        <p>Es la superficie de todo lo que ya operamos hoy por separado, en un solo lugar.</p>
+      </div>
+      <div>
+        <ul>
+          <li>Un agente con versión identificable, no una caja negra</li>
+          <li>Aprobación humana en toda acción sensible</li>
+          <li>Entregables y decisiones con rastro completo</li>
+          <li>Tu conocimiento privado, separado del de todos los demás</li>
+          <li>Límite de gasto por agente, con corte duro</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pending">
+      <b>Nota interna — decidir antes de publicar</b>
+      Copilot está en definición (etapa A, sin puerta aprobada). Esta sección se redactó como
+      dirección de producto, no como algo comprable. No agregar fechas ni lista de espera sin
+      decisión del fundador.
+    </div>
+  </div>
+</section>
+
+<section class="close" id="contacto">
+  <div class="wrap">
+    <div class="orb" style="margin-bottom:28px"><canvas id="orb" aria-label="Isotipo Orvin: esfera de partículas" role="img"></canvas></div>
+    <p class="eyebrow"><span class="dot"></span> Empieza por el diagnóstico</p>
+    <h2>Traemos un proceso a producción. Luego hablamos del resto.</h2>
+    <p class="lead">
+      Una conversación de 45 minutos sobre el proceso que más te duele. Sales con un diagnóstico
+      escrito: qué se puede automatizar, qué no conviene, y qué costaría. Sin costo y sin compromiso.
+    </p>
+    <div class="hero-actions" style="justify-content:center">
+      <a class="btn btn-primary" href="#">Agendar diagnóstico</a>
+      <a class="btn btn-ghost" href="#">Escribir por WhatsApp</a>
+    </div>
+    <div class="tagline">Un cerebro entre cerebros <span class="cursor"></span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="wordmark" style="font-size:20px">Orvin<i></i></span>
+    <span>© 2026 Orvin · Monterrey, México</span>
+    <a href="#">@orvin.cloud</a>
+  </div>
+</footer>
+
+<script>
+/* Isotipo Orvin — esfera de partículas. Portado de @orvin/ds v0.1.0 (OrvinIsotipo)
+   con la misma semilla determinista, para que el render sea idéntico al canon. */
+(function () {
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  function lerp(a,b,t){return a+(b-a)*t}
+  function pointColor(ny){
+    var r,g,b,t;
+    if(ny<0.45){t=ny/0.45;r=lerp(48,44,t);g=lerp(232,200,t);b=lerp(150,220,t);}
+    else{t=(ny-0.45)/0.55;r=lerp(44,70,t);g=lerp(200,158,t);b=lerp(220,255,t);}
+    var lift=1+ny*0.35;
+    return [Math.min(255,r*lift),Math.min(255,g*lift),Math.min(255,b*lift)];
+  }
+  function drawSphere(canvas,sizePx){
+    var dpr=2;
+    canvas.width=sizePx*dpr; canvas.height=sizePx*dpr;
+    canvas.style.width=sizePx+"px"; canvas.style.height=sizePx+"px";
+    var ctx=canvas.getContext("2d"); if(!ctx)return;
+    var w=canvas.width; ctx.clearRect(0,0,w,w);
+    var cx=w/2, cy=w/2, R=w*0.42;
+    var rand=mulberry32(20260625);
+    var N=Math.max(3200,Math.round(sizePx/240*9000));
+    for(var i=0;i<N;i++){
+      var theta=rand()*Math.PI*2, phi=rand()*Math.PI, drift=rand();
+      var rr=drift<0.96?1+(rand()-0.5)*0.03:1+rand()*0.07;
+      var x=Math.sin(phi)*Math.cos(theta)*rr;
+      var y=Math.cos(phi)*rr;
+      var z=Math.sin(phi)*Math.sin(theta);
+      var px=cx+x*R, py=cy-y*R, ny=py/w;
+      var front=z>=0;
+      var alpha=front?0.45+0.5*z:0.14+0.2*(1+z);
+      var radius=w/512*(0.45+rand()*1)*(front?1:0.8);
+      var sparkle=rand()<0.07;
+      if(sparkle&&front){ctx.fillStyle="rgba(240,250,255,"+(0.7+0.3*rand()).toFixed(3)+")";}
+      else{var c=pointColor(ny);
+        ctx.fillStyle="rgba("+(c[0]|0)+","+(c[1]|0)+","+(c[2]|0)+","+alpha.toFixed(3)+")";}
+      ctx.beginPath(); ctx.arc(px,py,radius,0,Math.PI*2); ctx.fill();
+    }
+  }
+  var el=document.getElementById("orb");
+  if(el) drawSphere(el, window.matchMedia("(max-width:860px)").matches?160:220);
+})();
+</script>
+</body>
+</html>

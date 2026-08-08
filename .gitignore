@@ -1,0 +1,10 @@
+.DS_Store
+*.log
+
+# Originales pesados de Higgsfield: se conservan en local, no se versionan.
+# Lo publicable son los .webp de arte/.
+arte/*.png
+
+# Documentos internos de estrategia: viven solo en local, no se versionan.
+plan-lanzamiento-14-dias.md
+posicionamiento.md
