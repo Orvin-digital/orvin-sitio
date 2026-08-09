@@ -8,3 +8,4 @@ arte/*.png
 # Documentos internos de estrategia: viven solo en local, no se versionan.
 plan-lanzamiento-14-dias.md
 posicionamiento.md
+dns-baseline-*.md
